@@ -10,7 +10,17 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/zwj-source/poi-bin-3.14/poi-3.14/poi/poi-3.14-20160307.jar!/" />
+          <root url="file://D:/zwj-source/poi" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://D:/zwj-source/poi" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://D:/zwj-source/poi/poi-ooxml-schemas-3.14-20160307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +29,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/zwj-source/poi-bin-3.14/poi-3.14/poi/poi-excelant-3.14-20160307.jar!/" />
+          <root url="jar://D:/zwj-source/poi/poi-scratchpad-3.14-20160307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +38,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/zwj-source/poi-bin-3.14/poi-3.14/poi/poi-ooxml-3.14-20160307.jar!/" />
+          <root url="jar://D:/zwj-source/poi/poi-ooxml-3.14-20160307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +47,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/zwj-source/poi-bin-3.14/poi-3.14/poi/poi-ooxml-schemas-3.14-20160307.jar!/" />
+          <root url="jar://D:/zwj-source/poi/poi-excelant-3.14-20160307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,7 +56,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/zwj-source/poi-bin-3.14/poi-3.14/poi/poi-scratchpad-3.14-20160307.jar!/" />
+          <root url="jar://D:/zwj-source/poi/poi-examples-3.14-20160307.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://D:/zwj-source/poi/poi-3.14-20160307.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

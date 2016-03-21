@@ -1,0 +1,39 @@
+
+apply plugin : 'java'
+apply plugin: 'application'
+
+
+jar{
+    baseName = 'zwj'
+    version = '1.0'
+}
+
+mainClassName = 'main.java.ui.MainFace'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies{
+    compile fileTree(dir:'D:/zwj-source/poi',include:'*.jar')
+}
+
+//依赖编译，然后打包JAR
+task taskJar(type:Jar, dependsOn: compileJava) {
+    from 'build/classes'
+    destinationDir = file('build/libs')
+}
+
+//清除上次的编译过的文件
+task clearPj(type:Delete){
+    delete 'build','target'
+}
+
+
+//把JAR复制到目标目录
+task release(type: Copy,dependsOn: [clearPj,taskJar]) {
+    from('build/libs') {
+        include '*.jar'
+    }
+    into ('target')
+}
