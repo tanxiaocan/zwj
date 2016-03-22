@@ -65,22 +65,22 @@ public class ItemsService {
     }
 
     //本地运行时使用此方法
-//    private static String getPropertiesFilePath(){
-//        String propertiesPath =ItemsService.class.getResource("../").getPath() + "item-export.properties";
-//        return propertiesPath;
-//    }
+    private static String getPropertiesFilePath(){
+        String propertiesPath =ItemsService.class.getResource("../").getPath() + "item-export.properties";
+        return propertiesPath;
+    }
 
     //打成zip包时使用此方法
-    private static String getPropertiesFilePath(){
-        String propertiePath = ItemsService.class.getResource("/item-export.properties").getPath();
-        int startPoint = propertiePath.indexOf(":");
-        startPoint += 2;
-        int cutPoint = propertiePath.indexOf("word-resolver");
-        cutPoint += "word-resolver".length();
-        propertiePath = propertiePath.substring(startPoint,cutPoint);
-        propertiePath += "/resources/item-export.properties";
-        return propertiePath;
-    }
+//    private static String getPropertiesFilePath(){
+//        String propertiePath = ItemsService.class.getResource("/item-export.properties").getPath();
+//        int startPoint = propertiePath.indexOf(":");
+//        startPoint += 2;
+//        int cutPoint = propertiePath.indexOf("word-resolver");
+//        cutPoint += "word-resolver".length();
+//        propertiePath = propertiePath.substring(startPoint,cutPoint);
+//        propertiePath += "/resources/item-export.properties";
+//        return propertiePath;
+//    }
 
     public static void main(String[] args){
         String propertiePath = "file:/d:/aaabbbfsafasfsa/libs/fafasfasf/fafasfasf";
