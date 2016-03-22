@@ -43,6 +43,7 @@ public class DomResolveServcie {
     private static Map<String,Object> resolveDocTable(String filePath,List<String> itemList){
         List<String> cellStrings = new ArrayList<String>();//记录一份文件所有单元格的字符串列表
         try {
+            System.out.println("resolveWordTable:" + filePath);
             OPCPackage opcPackage = POIXMLDocument.openPackage(filePath);//读取单个文件
             XWPFDocument xwpf = new XWPFDocument(opcPackage);//生成word文档对象
             for (XWPFTable xwpfTable : xwpf.getTables()) {//遍历word中所有的表格

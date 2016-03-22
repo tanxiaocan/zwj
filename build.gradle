@@ -9,11 +9,19 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile fileTree(dir:'D:/poi',include:'*.jar')
+//    compile fileTree(dir:'libs',include:'*.jar')
+    compile 'com.github.virtuald:curvesapi:1.03'
+    compile 'org.apache.poi:poi:3.14'
+    compile 'org.apache.poi:poi-excelant:3.14'
+    compile 'org.apache.poi:poi-ooxml:3.14'
+    compile 'org.apache.poi:poi-ooxml-schemas:3.14'
+    compile 'org.apache.poi:poi-scratchpad:3.14'
+    compile 'org.apache.xmlbeans:xmlbeans:2.6.0'
 }
 
 jar {
     baseName = "zwj"
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest {
         attributes 'Implementation-Title': 'Gradle Quickstart',
                 'Implementation-Version': version,
@@ -21,7 +29,7 @@ jar {
     }
 }
 
-task copySource(type : Copy ,dependsOn : [clean,jar]){
+task copySource(type : Copy ,dependsOn : [clean,compileJava,jar]){
     from 'build/resources'
     into 'build/classes'
 }
@@ -35,6 +43,7 @@ task copyBat(type : Copy,dependsOn : release){
     from "final-need"
     into "build/libs"
 }
+
 task buildZip (type : Zip,dependsOn : copyBat){
     from "build/libs"
     baseName = "word-resolver"
