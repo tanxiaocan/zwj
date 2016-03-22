@@ -1,16 +1,13 @@
-package main.java.service;
+package service;
 
-import main.java.domain.DocResolveInfo;
-import main.java.domain.ExcelItem;
-import main.java.domain.FinalInfo;
-import main.java.utils.RespUtils;
+import domain.DocResolveInfo;
+import domain.FinalInfo;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.*;
+import utils.RespUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

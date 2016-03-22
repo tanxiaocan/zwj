@@ -1,8 +1,8 @@
-package main.java.ui;
+package ui;
 
-import main.java.domain.FinalInfo;
-import main.java.service.DomResolveServcie;
-import main.java.service.ItemsService;
+import domain.FinalInfo;
+import service.DomResolveServcie;
+import service.ItemsService;
 
 import javax.swing.*;
 import java.awt.*;

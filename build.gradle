@@ -1,39 +1,46 @@
+apply plugin: 'java'
 
-apply plugin : 'java'
-apply plugin: 'application'
+sourceCompatibility = 1.6
+version = '1.0'
 
-
-jar{
-    baseName = 'zwj'
-    version = '1.0'
+repositories {
+    mavenCentral()
 }
 
-mainClassName = 'main.java.ui.MainFace'
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile fileTree(dir:'D:/poi',include:'*.jar')
+}
+
+jar {
+    baseName = "zwj"
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version,
+                'Main-class': 'ui.MainFace'
+    }
+}
+
+task copySource(type : Copy ,dependsOn : [clean,jar]){
+    from 'build/resources'
+    into 'build/classes'
+}
+
+task release(type :Copy ,dependsOn : copySource){
+    from 'build/resources/main'
+    into 'build/libs/resources'
+//    exclude 'images'
+}
+task copyBat(type : Copy,dependsOn : release){
+    from "final-need"
+    into "build/libs"
+}
+task buildZip (type : Zip,dependsOn : copyBat){
+    from "build/libs"
+    baseName = "word-resolver"
+    version = ""
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-dependencies{
-    compile fileTree(dir:'D:/zwj-source/poi',include:'*.jar')
-}
-
-//依赖编译，然后打包JAR
-task taskJar(type:Jar, dependsOn: compileJava) {
-    from 'build/classes'
-    destinationDir = file('build/libs')
-}
-
-//清除上次的编译过的文件
-task clearPj(type:Delete){
-    delete 'build','target'
-}
-
-
-//把JAR复制到目标目录
-task release(type: Copy,dependsOn: [clearPj,taskJar]) {
-    from('build/libs') {
-        include '*.jar'
-    }
-    into ('target')
 }
