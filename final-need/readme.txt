@@ -8,4 +8,8 @@ ItemService中有一段获取properties文件的方法，默认情况下注释�
 打Zip包方法
 
 1.将ItemService中的获取文件的方法切过来
-2.terminal窗口运行gradle buildZip,ok了，包打在build/distribution目录下了
+2.terminal窗口运行gradle clean buildZip,ok了，包打在build/distribution目录下了
+
+运行
+1.解压distribution目录下的word-resolver.zip到当前目录
+2.双击start.bat

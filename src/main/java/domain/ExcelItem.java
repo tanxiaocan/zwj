@@ -9,9 +9,9 @@ import java.util.List;
  * 采用单例存储需要解析的属性，在构造函数中构造
  */
 public class ExcelItem {
-    private static final ExcelItem excelItem = new ExcelItem();
-    private List<String> itemList = new ArrayList<String>();
-    private ExcelItem(){
+    private static final ExcelItem excelItem = new ExcelItem();//字段
+    private List<String> itemList = new ArrayList<String>();//字段
+    private ExcelItem(){//构造方法：用来构造对象
         String items = "";
         File file = new File("src/main/resources/item-export.properties");
         BufferedReader br = null;
