@@ -5,6 +5,7 @@ version = '1.0'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -17,6 +18,7 @@ dependencies {
     compile 'org.apache.poi:poi-ooxml-schemas:3.14'
     compile 'org.apache.poi:poi-scratchpad:3.14'
     compile 'org.apache.xmlbeans:xmlbeans:2.6.0'
+    compile 'org.springframework:spring-beans:4.3.3.RELEASE'
 }
 
 jar {

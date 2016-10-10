@@ -1,5 +1,7 @@
 package service;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import utils.RespUtils;
 
 import java.io.*;
@@ -11,12 +13,13 @@ import java.util.Map;
  * Created by tanxiaocan on 2016/3/20.
  */
 public class ItemsService {
+    public static String EXPORT_FILE_PATH = "item-export.properties";
     public static List<String> getItems(){
         List<String> items = new ArrayList<String>();
         BufferedReader br = null;
         try{
-            File file = new File(getPropertiesFilePath());
-            br =new BufferedReader(new InputStreamReader(new FileInputStream(file),"GBK"));
+//            File file = new File(getPropertiesFilePath());
+            br =new BufferedReader(new InputStreamReader(new FileInputStream(getPropertiesFilePath(EXPORT_FILE_PATH)),"GBK"));
             String line;
             while ((line = br.readLine()) != null) {
                 items.add(line);
@@ -44,8 +47,7 @@ public class ItemsService {
         }
         BufferedWriter bufferedWriter = null;
         try{
-            File file = new File(getPropertiesFilePath());
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true),"GBK"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getPropertiesFilePath(EXPORT_FILE_PATH),true),"GBK"));
             bufferedWriter.newLine();
             bufferedWriter.write(item);
             return RespUtils.success(item);
@@ -65,9 +67,14 @@ public class ItemsService {
     }
 
     //本地运行时使用此方法
-    private static String getPropertiesFilePath(){
-        String propertiesPath =ItemsService.class.getResource("../").getPath() + "item-export.properties";
-        return propertiesPath;
+    private static File getPropertiesFilePath(String filePath){
+//        String propertiesPath = ItemsService.class.getResource("../").getPath() + "item-export.properties";
+        try {
+            return new ClassPathResource("item-export.properties").getFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //打成zip包时使用此方法
