@@ -5,12 +5,14 @@ import domain.FinalInfo;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.*;
+import org.springframework.util.StringUtils;
 import utils.RespUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
 
 /**
  * Created by zhaiwenjie on 2016/3/18.
@@ -27,7 +29,7 @@ public class DomResolveServcie {
             File dirPath = new File(dirName);
             String[] fileStrs = dirPath.list();//获取目录下所有文件名，不包括目录名
             for(int i = 0;i < fileStrs.length;i ++){
-                fileStrs[i] = dirName + "/" + fileStrs[i];//加上目录名，拼出文件的绝对路径
+                fileStrs[i] = dirName + "\\" + fileStrs[i];//加上目录名，拼出文件的绝对路径
             }
             return RespUtils.success(fileStrs);//成功返回
         }catch (Exception e){
@@ -46,17 +48,17 @@ public class DomResolveServcie {
             System.out.println("resolveWordTable:" + filePath);
             OPCPackage opcPackage = POIXMLDocument.openPackage(filePath);//读取单个文件
             XWPFDocument xwpf = new XWPFDocument(opcPackage);//生成word文档对象
-            for (XWPFTable xwpfTable : xwpf.getTables()) {//遍历word中所有的表格
-                for(int i=0;i<xwpfTable.getNumberOfRows();i++){
-                    XWPFTableRow xwpfTableRow = xwpfTable.getRow(i);
-                    List<XWPFTableCell> xwpfTableCellList = xwpfTableRow.getTableCells();
-                    if(xwpfTableCellList.size() % 2 != 0){//如果表格的单元格数目不是偶数，返回该文件，这样的word不解析
-                        return RespUtils.fail("1","filePath" + "格式不符合要求");
-                    }
-                    getNeededAttr(xwpfTableCellList, itemList, cellStrings);
-                }
-
-            }
+            resolveAllTables(xwpf,itemList,cellStrings);
+//            for (XWPFTable xwpfTable : xwpf.getTables()) {//遍历word中所有的表格
+//                for(int i=0;i<xwpfTable.getNumberOfRows();i++){
+//                    XWPFTableRow xwpfTableRow = xwpfTable.getRow(i);
+//                    List<XWPFTableCell> xwpfTableCellList = xwpfTableRow.getTableCells();
+//                    if(xwpfTableCellList.size() % 2 != 0){//如果表格的单元格数目不是偶数，返回该文件，这样的word不解析
+//                        return RespUtils.fail("1","filePath" + "格式不符合要求");
+//                    }
+//                    getNeededAttr(xwpfTableCellList, itemList, cellStrings);
+//                }
+//            }
             return RespUtils.success(new DocResolveInfo(cellStrings,filePath,itemList));
 
         } catch (Exception e) {
@@ -68,6 +70,53 @@ public class DomResolveServcie {
         }
     }
 
+    private static void resolveAllTables(XWPFDocument xwpf,List<String> itemList,List<String> cellStrings){
+        for (int i = 0; i < itemList.size(); i++) {
+            String item = itemList.get(i);
+            for (XWPFTable xwpfTable : xwpf.getTables()) {
+                String value = getNeededAttrNew(xwpfTable,item,cellStrings);
+                cellStrings.add(value);
+                break;
+            }
+            String[] itemAndType = getItemAndType(item);
+            itemList.set(i,itemAndType[0]);
+        }
+    }
+
+    private static String getNeededAttrNew(XWPFTable xwpfTable,String item,List<String> cellStrings){
+        return  getItemValue(getItemAndType(item),xwpfTable);
+    }
+    private static String getItemValue(String[] itemAndType,XWPFTable xwpfTable){
+        String value = "-";
+        for(int i=0;i<xwpfTable.getNumberOfRows();i++){
+            XWPFTableRow xwpfTableRow = xwpfTable.getRow(i);
+            List<XWPFTableCell> xwpfTableCellList = xwpfTableRow.getTableCells();
+            for(int j=0;j<xwpfTableCellList.size();j++){
+                if(!StringUtils.hasText(itemAndType[1])){
+                    if(itemAndType[0].equals(getPrettyCellStr(xwpfTableCellList.get(j).getParagraphs()))){
+                        value = getPrettyCellStr(xwpfTableCellList.get(j + 1).getParagraphs());
+                        return value;
+                    }
+                }else{
+                    if(itemAndType[0].equals(getPrettyCellStr(xwpfTableCellList.get(j).getParagraphs()))){
+                        value = getPrettyCellStr(xwpfTable.getRow(i + 1).getTableCells().get(j).getParagraphs());
+                        return value;
+                    }
+                }
+            }
+        }
+        return value;
+    }
+    private static String[] getItemAndType(String item){
+        String[] itemAndType = new String[2];
+        if(item.contains("-")){
+            itemAndType = item.split("-");
+        }else {
+            itemAndType[0] = item;
+            itemAndType[1] = "";
+        }
+        return itemAndType;
+    }
     /**
      * 获取所有需要的属性值
      * @param xwpfTableCellList

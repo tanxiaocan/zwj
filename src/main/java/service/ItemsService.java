@@ -1,7 +1,6 @@
 package service;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import utils.RespUtils;
 
 import java.io.*;
@@ -18,7 +17,6 @@ public class ItemsService {
         List<String> items = new ArrayList<String>();
         BufferedReader br = null;
         try{
-//            File file = new File(getPropertiesFilePath());
             br =new BufferedReader(new InputStreamReader(new FileInputStream(getPropertiesFilePath(EXPORT_FILE_PATH)),"GBK"));
             String line;
             while ((line = br.readLine()) != null) {
@@ -70,24 +68,26 @@ public class ItemsService {
     private static File getPropertiesFilePath(String filePath){
 //        String propertiesPath = ItemsService.class.getResource("../").getPath() + "item-export.properties";
         try {
-            return new ClassPathResource("item-export.properties").getFile();
+            return new ClassPathResource(filePath).getFile();
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            System.out.println("文件加载不到，尝试使用jar方式加载");
+            return getPropertiesFileForJar(filePath);
         }
     }
 
-    //打成zip包时使用此方法
-//    private static String getPropertiesFilePath(){
-//        String propertiePath = ItemsService.class.getResource("/item-export.properties").getPath();
-//        int startPoint = propertiePath.indexOf(":");
-//        startPoint += 2;
-//        int cutPoint = propertiePath.indexOf("word-resolver");
-//        cutPoint += "word-resolver".length();
-//        propertiePath = propertiePath.substring(startPoint,cutPoint);
-//        propertiePath += "/resources/item-export.properties";
-//        return propertiePath;
-//    }
+//    打成zip包时使用此方法
+    private static File getPropertiesFileForJar(String filePath){
+        String propertiesPath = ItemsService.class.getResource("/" + filePath).getPath();
+        System.out.println(propertiesPath);
+        int startPoint = propertiesPath.indexOf(":");
+        startPoint += 2;
+        int cutPoint = propertiesPath.indexOf("word-resolver");
+        cutPoint += "word-resolver".length();
+        propertiesPath = propertiesPath.substring(startPoint,cutPoint);
+        propertiesPath += "/resources/" + filePath;
+        System.out.println(propertiesPath);
+        return new File(propertiesPath);
+    }
 
     public static void main(String[] args){
         String propertiePath = "file:/d:/aaabbbfsafasfsa/libs/fafasfasf/fafasfasf";
