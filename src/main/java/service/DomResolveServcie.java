@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
 
 /**
@@ -73,11 +74,13 @@ public class DomResolveServcie {
     private static void resolveAllTables(XWPFDocument xwpf,List<String> itemList,List<String> cellStrings){
         for (int i = 0; i < itemList.size(); i++) {
             String item = itemList.get(i);
+            String value = "-";
             for (XWPFTable xwpfTable : xwpf.getTables()) {
-                String value = getNeededAttrNew(xwpfTable,item,cellStrings);
-                cellStrings.add(value);
+                value = getNeededAttrNew(xwpfTable,item,cellStrings);
+                if(StringUtils.hasText(value) && !Objects.equals(value,"-"))
                 break;
             }
+            cellStrings.add(value);
             String[] itemAndType = getItemAndType(item);
             itemList.set(i,itemAndType[0]);
         }
